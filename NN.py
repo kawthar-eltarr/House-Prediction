@@ -39,11 +39,11 @@ class HousePricing_NN:
             moving_variance_initializer = "ones")
 
         x = norm(inputs)
-        x = Dense(256, activation = 'relu')(x)
+        x = Dense(32, activation = 'relu')(x)
         x = Dropout(0.2)(x)
-        x = Dense(128, activation = 'relu')(x)
+        x = Dense(16, activation = 'relu')(x)
         x = Dropout(0.2)(x)
-        x = Dense(64, activation = 'relu')(x)
+        x = Dense(8, activation = 'relu')(x)
         outputs = Dense(1)(x)
 
         return keras.Model(inputs=inputs, outputs=outputs, name="housing")

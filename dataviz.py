@@ -46,7 +46,12 @@ scl = [0,"rgb(150,0,90)"], [0.125,"rgb(0, 0, 200)"], [0.25,"rgb(0, 25, 255)"],\
 
 def mark_list(var1, var2, k = 5, r = 2):
     '''Returns a list to be used as marker generator'''
+    if r == 0:
+        return [round(var1 + i*(var2-var1)/k) for i in range(k)]
     return [round(var1 + i*(var2-var1)/k, r) for i in range(k)]
+
+max_mean_rooms /= 5
+max_mean_bedrooms /= 5
 
 
 app.layout = html.Div(children=[
@@ -82,12 +87,12 @@ app.layout = html.Div(children=[
                         pushable = 1,
                         value = [min_pop+(2*((mean_pop)-min_pop)/30), (mean_pop)-(2*((mean_pop)-min_pop)/30)]
                     ),
-
+                    
                     # to be exponential
                     html.H4(children='Mean rooms per households', className = "card-title"),
                     dcc.RangeSlider(
                         id = 'mean_rooms',
-                        marks = {str(x): str(x) for x in mark_list(min_mean_rooms, max_mean_rooms)},
+                        marks = {str(x): str(x) for x in mark_list(min_mean_rooms, max_mean_rooms, r = 0)},
                         tooltip={"placement": "top", "always_visible": True},
                         min = min_mean_rooms,
                         max = max_mean_rooms,
@@ -95,12 +100,12 @@ app.layout = html.Div(children=[
                         pushable = 1,
                         value = [min_mean_rooms, (max_mean_rooms)-(50*((max_mean_rooms)-min_mean_rooms)/80)]
                     ),
-
+                    
                     # to be exponential
                     html.H4(children='Mean bedrooms per households', className = "card-title"),
                     dcc.RangeSlider(
                         id = 'mean_bedrooms',
-                        marks = {str(x): str(x) for x in mark_list(min_mean_bedrooms, max_mean_bedrooms)},
+                        marks = {str(x): str(x) for x in mark_list(min_mean_bedrooms, max_mean_bedrooms, r = 0)},
                         tooltip={"placement": "top", "always_visible": True},
                         min = min_mean_bedrooms,
                         max = max_mean_bedrooms,
@@ -125,15 +130,15 @@ app.layout = html.Div(children=[
                 ),
                 className='card-body'
             ),
-        className="card border-secondary mb-3", style={'max-width': '30rem', 'marginLeft': 1400, 'marginTop': 50}
+        className="card border-secondary mb-3", style={'max-width': '30rem', 'marginLeft': 1300, 'marginTop': 50}
         ),
-    ], style = {'marginBottom': 50, 'marginTop': 25, 'marginLeft': 25, 'marginRight': 25}),
+    ], style = {'marginBottom': 50, 'marginTop': 50, 'marginLeft': 50, 'marginRight': 25}),
 
     html.Div(
         dcc.Graph(
             id='myMap'
         ),
-    style = {'position':'relative', 'bottom':600, 'left':100, 'width':1200}
+    style = {'position':'relative', 'bottom':600, 'left':50, 'width':1200}
     )
 ])
     
@@ -171,7 +176,7 @@ def update_graph(value, location, pop_range, room_range, bedroom_range):
     if location != 'WTVR':
         filtered_data = filtered_data[filtered_data.ocean_proximity == location]
 
-    fig = go.Figure(layout = go.Layout(height = 600, width = 1200),
+    fig = go.Figure(layout = go.Layout(height = 700, width = 1200),
         data = go.Scattergeo(
         lat = filtered_data['latitude'],
         lon = filtered_data['longitude'],

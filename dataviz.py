@@ -58,7 +58,8 @@ app.layout = html.Div(children=[
     ),
     html.Div(id='output-container-range-slider'),
     
-    html.Div(children='Please, select min and max population'),
+    # to be exponential
+    html.Div(children='Population'),
     dcc.RangeSlider(
         id = 'population_range',
         min = min_pop,
@@ -68,23 +69,25 @@ app.layout = html.Div(children=[
     ),
     html.Div(id='output-pop-slider'),
     
+    # to be exponential
     html.Div(children='Mean rooms per households'),
     dcc.RangeSlider(
         id = 'mean_rooms',
         min = min_mean_rooms,
         max = max_mean_rooms,
-        step = (max_mean_rooms - min_mean_rooms)/30,
-        value = [min_mean_rooms, (max_mean_rooms)-(2*((max_mean_rooms)-min_mean_rooms)/30)]
+        step = (max_mean_rooms - min_mean_rooms)/80,
+        value = [min_mean_rooms, (max_mean_rooms)-(50*((max_mean_rooms)-min_mean_rooms)/80)]
     ),
     html.Div(id='output-meanrooms-slider'),
     
+    # to be exponential
     html.Div(children='Mean bedrooms per households'),
     dcc.RangeSlider(
         id = 'mean_bedrooms',
         min = min_mean_bedrooms,
         max = max_mean_bedrooms,
-        step = (max_mean_bedrooms - min_mean_bedrooms)/30,
-        value = [min_mean_bedrooms, (max_mean_bedrooms)-(2*((max_mean_bedrooms)-min_mean_bedrooms)/30)]
+        step = (max_mean_bedrooms - min_mean_bedrooms)/80,
+        value = [min_mean_bedrooms, (max_mean_bedrooms)-(50*((max_mean_bedrooms)-min_mean_bedrooms)/80)]
     ),
     html.Div(id='output-meanbedrooms-slider'),
     
@@ -103,7 +106,9 @@ app.layout = html.Div(children=[
 
     dcc.Graph(
         id='myMap'
-    )
+    ),
+    
+    html.Div(id='mean_price')
 ])
 
 
@@ -134,7 +139,8 @@ def update_output(bedrooms_range):
     return 'The values are {}'.format([round(x, 1) for x in bedrooms_range])
 
 @app.callback(
-    dash.dependencies.Output('myMap', 'figure'),
+    [dash.dependencies.Output('myMap', 'figure'),
+    dash.dependencies.Output('mean_price', 'children')],
     [dash.dependencies.Input('price_range', 'value'),
     dash.dependencies.Input('loc_choice', 'value'),
     dash.dependencies.Input('population_range', 'value'),
@@ -214,7 +220,15 @@ def update_graph(value, location, pop_range, room_range, bedroom_range):
         title='Californian housing market',
     )
     
-    return fig
+    # Creating mean value text
+    mean_value = filtered_data.median_house_value.mean()
+    
+    if mean_value is np.nan:
+        mean_median_price_text = 'There are no house in the selection !'
+    else: 
+        mean_median_price_text = 'The mean price is {}'.format(mean_value)
+    
+    return fig, mean_median_price_text
 
 if __name__ == '__main__':
     app.run_server(debug=True)

@@ -9,6 +9,8 @@ from sklearn.ensemble import RandomForestRegressor
 
 from sklearn.metrics import mean_absolute_error, r2_score
 
+import joblib
+
 class HousePricing:
     
     def __init__(self):
@@ -16,6 +18,7 @@ class HousePricing:
         self.X = self.define_X()
         self.y = self.define_y()
         self.X_train, self.X_val, self.y_train, self.y_val = train_test_split(self.X, self.y, test_size = 0.25, shuffle=True)
+        self.model = None
 
     
     def preprocessing(self):
@@ -39,16 +42,43 @@ class HousePricing:
         return np.array(self.df["median_house_value"])
     
     def model_train(self):
-        model = RandomForestRegressor(n_estimators = 300)
-        model.fit(self.X_train, self.y_train)
-        return model
+        self.model = RandomForestRegressor(n_estimators = 300)
+        self.model.fit(self.X_train, self.y_train)
+        return self.model
     
     def model_validation(self, display_scores=True):
         y_pred = self.model.predict(self.X_val)
-        mae = mean_absolute_error(self.y_val, self.y_pred)
-        print("Mean absolute error is : {}".format(mae))
-        r2 = r2_score(self.y_val, self.y_pred)
-        print("R² score is : {}".format(r2))
+        mae = mean_absolute_error(self.y_val, y_pred)
+        r2 = r2_score(self.y_val, y_pred)
+        if display_scores:
+            print("Mean absolute error is : {}".format(mae))
+            print("R² score is : {}".format(r2))
         return y_pred, mae, r2
+    
+    def model_overall(self, display_scores=True):
+        y_pred = self.model.predict(self.X)
+        mae = mean_absolute_error(self.y, y_pred)
+        r2 = r2_score(self.y, y_pred)
+        if display_scores:
+            print("Mean absolute error is : {}".format(mae))
+            print("R² score is : {}".format(r2))
+        return y_pred, mae, r2
+
+    def save_model(self):
+        filename = 'model\RF_model.sav'
+        joblib.dump(self.model, filename)
+        
+    def model_predict(self):
+        return 0
+        
+        
+
+if __name__ == '__main__':
+    hp = HousePricing()
+    hp.model_train()
+    hp.model_validation()
+    hp.model_overall()
+    hp.save_model()
+    
         
         

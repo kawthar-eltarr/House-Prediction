@@ -3,6 +3,7 @@ from dash import Dash
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
+import dash_bootstrap_components as dbc
 # Plotly
 import plotly.graph_objects as go
 import plotly.express as px
@@ -45,71 +46,86 @@ scl = [0,"rgb(150,0,90)"], [0.125,"rgb(0, 0, 200)"], [0.25,"rgb(0, 25, 255)"],\
 
 
 app.layout = html.Div(children=[
-    html.H1(children='Housing prices in California'),
-    
-    
-    html.Div(children='Please, select min and max median price'),
-    dcc.RangeSlider(
-        id = 'price_range',
-        min = min_house_value,
-        max = max_house_value,
-        step = (max_house_value-min_house_value)/30,
-        value = [min_house_value+(2*(max_house_value-min_house_value)/30), max_house_value-(2*(max_house_value-min_house_value)/30)]
-    ),
-    html.Div(id='output-container-range-slider'),
-    
-    # to be exponential
-    html.Div(children='Population'),
-    dcc.RangeSlider(
-        id = 'population_range',
-        min = min_pop,
-        max = mean_pop,
-        step = (mean_pop - min_pop)/30,
-        value = [min_pop+(2*((mean_pop)-min_pop)/30), (mean_pop)-(2*((mean_pop)-min_pop)/30)]
-    ),
-    html.Div(id='output-pop-slider'),
-    
-    # to be exponential
-    html.Div(children='Mean rooms per households'),
-    dcc.RangeSlider(
-        id = 'mean_rooms',
-        min = min_mean_rooms,
-        max = max_mean_rooms,
-        step = (max_mean_rooms - min_mean_rooms)/80,
-        value = [min_mean_rooms, (max_mean_rooms)-(50*((max_mean_rooms)-min_mean_rooms)/80)]
-    ),
-    html.Div(id='output-meanrooms-slider'),
-    
-    # to be exponential
-    html.Div(children='Mean bedrooms per households'),
-    dcc.RangeSlider(
-        id = 'mean_bedrooms',
-        min = min_mean_bedrooms,
-        max = max_mean_bedrooms,
-        step = (max_mean_bedrooms - min_mean_bedrooms)/80,
-        value = [min_mean_bedrooms, (max_mean_bedrooms)-(50*((max_mean_bedrooms)-min_mean_bedrooms)/80)]
-    ),
-    html.Div(id='output-meanbedrooms-slider'),
-    
-    dcc.RadioItems(
-        id = 'loc_choice',
-        options=[
-            {'label': 'Near Ocean', 'value': 'NEAR OCEAN'},
-            {'label': '<1h from Ocean', 'value': '<1H OCEAN'},
-            {'label': 'Inland', 'value': 'INLAND'},
-            {'label': 'Near San Francisco Bay', 'value': 'NEAR BAY'},
-            {'label': 'Island', 'value': 'ISLAND'},
-            {'label': 'Whatever', 'value': 'WTVR'}
-        ],
-        value='WTVR'
-    ),
+    html.Div([
+        html.H1(children='Housing prices in California'),
 
-    dcc.Graph(
-        id='myMap'
-    ),
-    
-    html.Div(id='mean_price')
+        html.H4(id='mean_price'),
+
+        html.Div(
+            html.Div(
+                html.P(
+                    [html.H4(children='Price', className = "card-title"),
+                    dcc.RangeSlider(
+                        id = 'price_range',
+                        min = min_house_value,
+                        max = max_house_value,
+                        step = (max_house_value-min_house_value)/30,
+                        value = [min_house_value+(2*(max_house_value-min_house_value)/30), max_house_value-(2*(max_house_value-min_house_value)/30)]
+                    ),
+                    html.Div(id='output-container-range-slider'),
+
+                    # to be exponential
+                    html.H4(children='Population', className = "card-title"),
+                    dcc.RangeSlider(
+                        id = 'population_range',
+                        min = min_pop,
+                        max = mean_pop,
+                        step = (mean_pop - min_pop)/30,
+                        value = [min_pop+(2*((mean_pop)-min_pop)/30), (mean_pop)-(2*((mean_pop)-min_pop)/30)]
+                    ),
+                    html.Div(id='output-pop-slider'),
+
+                    # to be exponential
+                    html.H4(children='Mean rooms per households', className = "card-title"),
+                    dcc.RangeSlider(
+                        id = 'mean_rooms',
+                        min = min_mean_rooms,
+                        max = max_mean_rooms,
+                        step = (max_mean_rooms - min_mean_rooms)/80,
+                        value = [min_mean_rooms, (max_mean_rooms)-(50*((max_mean_rooms)-min_mean_rooms)/80)]
+                    ),
+                    html.Div(id='output-meanrooms-slider'),
+
+                    # to be exponential
+                    html.H4(children='Mean bedrooms per households', className = "card-title"),
+                    dcc.RangeSlider(
+                        id = 'mean_bedrooms',
+                        min = min_mean_bedrooms,
+                        max = max_mean_bedrooms,
+                        step = (max_mean_bedrooms - min_mean_bedrooms)/80,
+                        value = [min_mean_bedrooms, (max_mean_bedrooms)-(50*((max_mean_bedrooms)-min_mean_bedrooms)/80)]
+                    ),
+                    html.Div(id='output-meanbedrooms-slider'),
+
+                    dcc.RadioItems(
+                        id = 'loc_choice',
+                        options=[
+                            {'label': 'Near Ocean', 'value': 'NEAR OCEAN'},
+                            {'label': '<1h from Ocean', 'value': '<1H OCEAN'},
+                            {'label': 'Inland', 'value': 'INLAND'},
+                            {'label': 'Near San Francisco Bay', 'value': 'NEAR BAY'},
+                            {'label': 'Island', 'value': 'ISLAND'},
+                            {'label': 'Whatever', 'value': 'WTVR'}
+                        ],
+                        value='WTVR'
+                    )],
+                    className = 'card_text'
+                ),
+                className='card-body'
+            ),
+        className="card border-secondary mb-3", style={'max-width': '30rem', 'marginLeft': 1400, 'marginTop': 50}
+        ),
+    ], style = {'marginBottom': 50, 'marginTop': 25, 'marginLeft': 25, 'marginRight': 25}),
+
+    html.Div(
+        dcc.Graph(
+            id='myMap'
+        ),
+    style = {'position':'relative', 'bottom':600, 'left':100}
+    )
 ])
+    
+
 
 
 #### Callbacks
@@ -216,8 +232,7 @@ def update_graph(value, location, pop_range, room_range, bedroom_range):
                 range= [ 20.0, 60.0 ],
                 dtick = 1
             )
-        ),
-        title='Californian housing market',
+        )
     )
     
     # Creating mean value text
@@ -226,7 +241,7 @@ def update_graph(value, location, pop_range, room_range, bedroom_range):
     if mean_value is np.nan:
         mean_median_price_text = 'There are no house in the selection !'
     else: 
-        mean_median_price_text = 'The mean price is {}'.format(mean_value)
+        mean_median_price_text = 'The mean price is {}'.format(round(mean_value, 2))
     
     return fig, mean_median_price_text
 

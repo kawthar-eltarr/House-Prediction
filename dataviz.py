@@ -44,6 +44,10 @@ scl = [0,"rgb(150,0,90)"], [0.125,"rgb(0, 0, 200)"], [0.25,"rgb(0, 25, 255)"],\
 [0.375,"rgb(0, 152, 255)"],[0.5,"rgb(44, 255, 150)"],[0.625,"rgb(151, 255, 0)"],\
 [0.75,"rgb(255, 234, 0)"],[0.875,"rgb(255, 111, 0)"],[1,"rgb(255, 0, 0)"]
 
+def mark_list(var1, var2, k = 5, r = 2):
+    '''Returns a list to be used as marker generator'''
+    return [round(var1 + i*(var2-var1)/k, r) for i in range(k)]
+
 
 app.layout = html.Div(children=[
     html.Div([
@@ -57,45 +61,53 @@ app.layout = html.Div(children=[
                     [html.H4(children='Price', className = "card-title"),
                     dcc.RangeSlider(
                         id = 'price_range',
+                        marks = {str(x): str(x) for x in mark_list(min_house_value, max_house_value)},
+                        tooltip = {"placement": "top", "always_visible": True},
                         min = min_house_value,
                         max = max_house_value,
-                        step = (max_house_value-min_house_value)/30,
+                        step = round((max_house_value - min_house_value)/30, 2),
+                        pushable = 1,
                         value = [min_house_value+(2*(max_house_value-min_house_value)/30), max_house_value-(2*(max_house_value-min_house_value)/30)]
                     ),
-                    html.Div(id='output-container-range-slider'),
 
                     # to be exponential
                     html.H4(children='Population', className = "card-title"),
                     dcc.RangeSlider(
                         id = 'population_range',
+                        marks = {str(x): str(x) for x in mark_list(min_pop, mean_pop)},
+                        tooltip={"placement": "top", "always_visible": True},
                         min = min_pop,
                         max = mean_pop,
-                        step = (mean_pop - min_pop)/30,
+                        step = round((mean_pop - min_pop)/30, 2),
+                        pushable = 1,
                         value = [min_pop+(2*((mean_pop)-min_pop)/30), (mean_pop)-(2*((mean_pop)-min_pop)/30)]
                     ),
-                    html.Div(id='output-pop-slider'),
 
                     # to be exponential
                     html.H4(children='Mean rooms per households', className = "card-title"),
                     dcc.RangeSlider(
                         id = 'mean_rooms',
+                        marks = {str(x): str(x) for x in mark_list(min_mean_rooms, max_mean_rooms)},
+                        tooltip={"placement": "top", "always_visible": True},
                         min = min_mean_rooms,
                         max = max_mean_rooms,
-                        step = (max_mean_rooms - min_mean_rooms)/80,
+                        step = round((max_mean_rooms - min_mean_rooms)/80, 2),
+                        pushable = 1,
                         value = [min_mean_rooms, (max_mean_rooms)-(50*((max_mean_rooms)-min_mean_rooms)/80)]
                     ),
-                    html.Div(id='output-meanrooms-slider'),
 
                     # to be exponential
                     html.H4(children='Mean bedrooms per households', className = "card-title"),
                     dcc.RangeSlider(
                         id = 'mean_bedrooms',
+                        marks = {str(x): str(x) for x in mark_list(min_mean_bedrooms, max_mean_bedrooms)},
+                        tooltip={"placement": "top", "always_visible": True},
                         min = min_mean_bedrooms,
                         max = max_mean_bedrooms,
-                        step = (max_mean_bedrooms - min_mean_bedrooms)/80,
+                        step = round((max_mean_bedrooms - min_mean_bedrooms)/80, 2),
+                        pushable = 1,
                         value = [min_mean_bedrooms, (max_mean_bedrooms)-(50*((max_mean_bedrooms)-min_mean_bedrooms)/80)]
                     ),
-                    html.Div(id='output-meanbedrooms-slider'),
 
                     dcc.RadioItems(
                         id = 'loc_choice',
@@ -121,7 +133,7 @@ app.layout = html.Div(children=[
         dcc.Graph(
             id='myMap'
         ),
-    style = {'position':'relative', 'bottom':600, 'left':100}
+    style = {'position':'relative', 'bottom':600, 'left':100, 'width':1200}
     )
 ])
     
@@ -129,30 +141,6 @@ app.layout = html.Div(children=[
 
 
 #### Callbacks
-
-@app.callback(
-    dash.dependencies.Output('output-container-range-slider', 'children'),
-    dash.dependencies.Input('price_range', 'value'))
-def update_output(price_range):
-    return 'The values are {}'.format([round(x, 2) for x in price_range])
-
-@app.callback(
-    dash.dependencies.Output('output-pop-slider', 'children'),
-    dash.dependencies.Input('population_range', 'value'))
-def update_output(pop_range):
-    return 'The values are {}'.format([round(x) for x in pop_range])
-
-@app.callback(
-    dash.dependencies.Output('output-meanrooms-slider', 'children'),
-    dash.dependencies.Input('mean_rooms', 'value'))
-def update_output(rooms_range):
-    return 'The values are {}'.format([round(x, 1) for x in rooms_range])
-
-@app.callback(
-    dash.dependencies.Output('output-meanbedrooms-slider', 'children'),
-    dash.dependencies.Input('mean_bedrooms', 'value'))
-def update_output(bedrooms_range):
-    return 'The values are {}'.format([round(x, 1) for x in bedrooms_range])
 
 @app.callback(
     [dash.dependencies.Output('myMap', 'figure'),

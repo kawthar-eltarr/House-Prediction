@@ -15,23 +15,33 @@ app = Dash(__name__)
 # assume you have a "long-form" data frame
 # see https://plotly.com/python/px-arguments/ for more options
 df = pd.read_csv('housing.csv')
-map_data = df[['longitude', 'latitude', 'median_house_value', 'ocean_proximity', 'population']]
+map_data = df[['longitude', 'latitude', 'median_house_value', 'ocean_proximity', 'population', 'total_rooms', 'total_bedrooms', 'households']]
 
 # Taking random data to test the map
 rnd = np.random.randint(0, df.shape[0], 5000)
 map_data = map_data.iloc[rnd, :]
 
+
 #### Layout
 
+# Getting data
 max_house_value, min_house_value = map_data.median_house_value.max(), map_data.median_house_value.min()
+
 max_pop, min_pop, std_pop = map_data.population.max(), map_data.population.min(), map_data.population.std()
 mean_pop = map_data.population.mean()
+
 mean_long, mean_lat = map_data.latitude.mean(), map_data.longitude.mean()
+
+map_data['mean_rooms'] = map_data.total_rooms / map_data.households
+max_mean_rooms, min_mean_rooms = map_data.mean_rooms.max(), map_data.mean_rooms.min()
+
+map_data['mean_bedrooms'] = map_data.total_bedrooms / map_data.households
+max_mean_bedrooms, min_mean_bedrooms = map_data.mean_bedrooms.max(), map_data.mean_bedrooms.min()
+
 
 scl = [0,"rgb(150,0,90)"], [0.125,"rgb(0, 0, 200)"], [0.25,"rgb(0, 25, 255)"],\
 [0.375,"rgb(0, 152, 255)"],[0.5,"rgb(44, 255, 150)"],[0.625,"rgb(151, 255, 0)"],\
 [0.75,"rgb(255, 234, 0)"],[0.875,"rgb(255, 111, 0)"],[1,"rgb(255, 0, 0)"]
-
 
 
 app.layout = html.Div(children=[
@@ -58,6 +68,26 @@ app.layout = html.Div(children=[
     ),
     html.Div(id='output-pop-slider'),
     
+    html.Div(children='Mean rooms per households'),
+    dcc.RangeSlider(
+        id = 'mean_rooms',
+        min = min_mean_rooms,
+        max = max_mean_rooms,
+        step = (max_mean_rooms - min_mean_rooms)/30,
+        value = [min_mean_rooms, (max_mean_rooms)-(2*((max_mean_rooms)-min_mean_rooms)/30)]
+    ),
+    html.Div(id='output-meanrooms-slider'),
+    
+    html.Div(children='Mean bedrooms per households'),
+    dcc.RangeSlider(
+        id = 'mean_bedrooms',
+        min = min_mean_bedrooms,
+        max = max_mean_bedrooms,
+        step = (max_mean_bedrooms - min_mean_bedrooms)/30,
+        value = [min_mean_bedrooms, (max_mean_bedrooms)-(2*((max_mean_bedrooms)-min_mean_bedrooms)/30)]
+    ),
+    html.Div(id='output-meanbedrooms-slider'),
+    
     dcc.RadioItems(
         id = 'loc_choice',
         options=[
@@ -83,20 +113,34 @@ app.layout = html.Div(children=[
     dash.dependencies.Output('output-container-range-slider', 'children'),
     dash.dependencies.Input('price_range', 'value'))
 def update_output(price_range):
-    return 'The values are {}'.format(price_range)
+    return 'The values are {}'.format([round(x, 2) for x in price_range])
 
 @app.callback(
     dash.dependencies.Output('output-pop-slider', 'children'),
     dash.dependencies.Input('population_range', 'value'))
 def update_output(pop_range):
-    return 'The values are {}'.format(pop_range)
+    return 'The values are {}'.format([round(x) for x in pop_range])
+
+@app.callback(
+    dash.dependencies.Output('output-meanrooms-slider', 'children'),
+    dash.dependencies.Input('mean_rooms', 'value'))
+def update_output(rooms_range):
+    return 'The values are {}'.format([round(x, 1) for x in rooms_range])
+
+@app.callback(
+    dash.dependencies.Output('output-meanbedrooms-slider', 'children'),
+    dash.dependencies.Input('mean_bedrooms', 'value'))
+def update_output(bedrooms_range):
+    return 'The values are {}'.format([round(x, 1) for x in bedrooms_range])
 
 @app.callback(
     dash.dependencies.Output('myMap', 'figure'),
     [dash.dependencies.Input('price_range', 'value'),
     dash.dependencies.Input('loc_choice', 'value'),
-    dash.dependencies.Input('population_range', 'value')])
-def update_graph(value, location, pop_range):
+    dash.dependencies.Input('population_range', 'value'),
+    dash.dependencies.Input('mean_rooms', 'value'),
+    dash.dependencies.Input('mean_bedrooms', 'value')])
+def update_graph(value, location, pop_range, room_range, bedroom_range):
     
     # Filtering upon price
     filtered_data = map_data[map_data.median_house_value > value[0]]
@@ -105,6 +149,14 @@ def update_graph(value, location, pop_range):
     # Filtering upon pop
     filtered_data = filtered_data[filtered_data.population > pop_range[0]]
     filtered_data = filtered_data[filtered_data.population < pop_range[1]]
+    
+    # Filtering upon mean rooms
+    filtered_data = filtered_data[filtered_data.mean_rooms > room_range[0]]
+    filtered_data = filtered_data[filtered_data.mean_rooms < room_range[1]]
+    
+    # Filtering upon mean bedrooms
+    filtered_data = filtered_data[filtered_data.mean_bedrooms > bedroom_range[0]]
+    filtered_data = filtered_data[filtered_data.mean_bedrooms < bedroom_range[1]]
 
     if location != 'WTVR':
         filtered_data = filtered_data[filtered_data.ocean_proximity == location]

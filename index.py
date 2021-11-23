@@ -4,7 +4,7 @@ import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output
 
 from app import app
-from layouts import layout1, layout2, layout3
+from layouts import layout1, layout2, layout3, layout4, layout5
 import callbacks
 
 app.layout = html.Div([
@@ -19,8 +19,12 @@ def display_page(pathname):
          return layout1
     elif pathname == '/pred_tool':
          return layout2
-    elif pathname == '/viz_tool':
+    elif pathname == '/pred_tool/ml':
          return layout3
+    elif pathname == '/pred_tool/dl':
+         return layout4
+    elif pathname == '/viz_tool':
+         return layout5
     else:
         return '404'
 

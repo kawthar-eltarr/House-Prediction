@@ -8,6 +8,7 @@ from app import server
 from layouts import layout1, layout2, layout3, layout4, layout5
 import callbacks
 
+
 app.layout = html.Div([
     dcc.Location(id='url', refresh=False),
     html.Div(id='page-content')

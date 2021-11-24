@@ -4,6 +4,7 @@ import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output
 
 from app import app
+from app import server
 from layouts import layout1, layout2, layout3, layout4, layout5
 import callbacks
 

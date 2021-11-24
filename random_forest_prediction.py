@@ -7,6 +7,8 @@ from sklearn.model_selection import train_test_split
 
 from sklearn.ensemble import RandomForestRegressor
 
+import xgboost as xg
+
 from sklearn.metrics import mean_absolute_error, r2_score
 
 import joblib
@@ -41,8 +43,11 @@ class HousePricing:
     def define_y(self):
         return np.array(self.df["median_house_value"])
     
-    def model_train(self):
-        self.model = RandomForestRegressor(n_estimators = 300)
+    def model_train(self, model="RF"):
+        if model == "RF":
+            self.model = RandomForestRegressor(n_estimators = 300)
+        elif model == "XG" :
+            self.model = xg.XGBRegressor(n_estimators = 500)
         self.model.fit(self.X_train, self.y_train)
         return self.model
     
@@ -77,7 +82,7 @@ class HousePricing:
 
 if __name__ == '__main__':
     hp = HousePricing()
-    hp.model_train()
+    hp.model_train("XG")
     hp.model_validation()
     hp.model_overall()
     hp.save_model()

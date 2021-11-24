@@ -76,13 +76,6 @@ layout3 = html.Div(children=[
             ],
             className="g-2"),
         
-        dbc.Row(
-            [
-                dbc.Label("Median house value", width="auto"),
-                dbc.Col(dbc.Input(id='input-form-house-value', type='text'), className="me-3", width="1")               
-            ],
-            className="g-2"),
-        
         html.Div(
             [
                 dbc.Label("Dropdown", html_for="dropdown"),

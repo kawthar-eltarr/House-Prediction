@@ -19,9 +19,11 @@ mean_long, mean_lat = map_data.latitude.mean(), map_data.longitude.mean()
 
 map_data['mean_rooms'] = map_data.total_rooms / map_data.households
 max_mean_rooms, min_mean_rooms = map_data.mean_rooms.max(), map_data.mean_rooms.min()
+max_mean_rooms /= 10
 
 map_data['mean_bedrooms'] = map_data.total_bedrooms / map_data.households
 max_mean_bedrooms, min_mean_bedrooms = map_data.mean_bedrooms.max(), map_data.mean_bedrooms.min()
+max_mean_bedrooms /= 10
 
 
 def mark_list(var1, var2, k=5, r=2):

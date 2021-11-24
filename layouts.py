@@ -6,8 +6,7 @@ import pandas as pd
 # Prep for layout 5 (dataviz)
 # Getting data
 df = pd.read_csv('housing.csv')
-map_data = df[
-    ['longitude', 'latitude', 'median_house_value', 'ocean_proximity', 'population', 'total_rooms', 'total_bedrooms',
+map_data = df[['longitude', 'latitude', 'median_house_value', 'ocean_proximity', 'population', 'total_rooms', 'total_bedrooms',
      'households']]
 
 max_house_value, min_house_value = map_data.median_house_value.max(), map_data.median_house_value.min()
@@ -17,11 +16,12 @@ mean_pop = map_data.population.mean()
 
 mean_long, mean_lat = map_data.latitude.mean(), map_data.longitude.mean()
 
-map_data['mean_rooms'] = map_data.total_rooms / map_data.households
+map_data.loc[:, 'mean_rooms'] = (map_data.total_rooms / map_data.households)
+
 max_mean_rooms, min_mean_rooms = map_data.mean_rooms.max(), map_data.mean_rooms.min()
 max_mean_rooms /= 10
 
-map_data['mean_bedrooms'] = map_data.total_bedrooms / map_data.households
+map_data.loc[:,'mean_bedrooms'] = map_data.total_bedrooms / map_data.households
 max_mean_bedrooms, min_mean_bedrooms = map_data.mean_bedrooms.max(), map_data.mean_bedrooms.min()
 max_mean_bedrooms /= 10
 
@@ -234,7 +234,7 @@ layout4 = html.Div(children=[
             [
                 dbc.Label("Dropdown", html_for="dropdown"),
                 dcc.Dropdown(
-                    id="dropdown",
+                    id="dropdown", style={'color': 'pink'},
                     options=[
                         {"label": "<1H OCEAN", "value": 0},
                         {"label": "INLAND", "value": 1},
@@ -271,7 +271,7 @@ layout5 = html.Div(children=[
                     [
                         html.H4('Type of graph'),
                         dcc.Dropdown(
-                            id='dropdown_graph',
+                            id='dropdown_graph', style={'color': 'pink'},
                             options=[
                                 {'label': 'Map', 'value': 'map'},
                                 {'label': 'Histogram', 'value': 'hist'}
@@ -293,7 +293,6 @@ layout5 = html.Div(children=[
                                    max_house_value - (2 * (max_house_value - min_house_value) / 30)]
                         ),
 
-                        # to be exponential
                         html.H4(children='Population', className="card-title"),
                         dcc.RangeSlider(
                             id='population_range',

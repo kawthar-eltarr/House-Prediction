@@ -146,87 +146,79 @@ layout3 = html.Div(className="card border-secondary mb-3", children=[
         ),
         html.Br(),
 
-        dbc.Button("Submit", color="primary", id='submit-val', n_clicks=0),
+        dbc.Button("Submit", color="primary", id='submit-val-ml', n_clicks=0),
 
         html.Br(),
 
         html.Div(children=[
             html.H5('The machine learning model has predicted this value : '),
-            html.H5(id='output-prediction', className="my-4", style={"font-weight": "bold"})]),
+            html.H5(id='output-prediction-ml', className="my-4", style={"font-weight": "bold"})]),
     ]),
 
 ],
+    style={
+        'margin': 'auto',
+        'max-width': '95vw',
+        'margin-top': '3%',
+        'textAlign': 'center'
+        })
 
-                   style={
-                       'margin': 'auto',
-                       'max-width': '95vw',
-                       'margin-top': '3%',
-                       'textAlign': 'center',
-                   })
-
-layout4 = html.Div(children=[
+layout4 = html.Div(className="card border-secondary mb-3", children=[
     html.H1('Price Prediction Tool with Deep Learning', style={'margin': 'inherit'}),
-    dbc.Form(children=[
+    dbc.Form(style={'margin-left': '2%', 'margin-right': '2%'}, children=[
         dbc.Row(
             [
                 dbc.Label("Longitude", width="auto"),
-                dbc.Col(dbc.Input(), className="me-3", width="1")
+                dbc.Col(dbc.Input(id='input-form-longitude', type='text'), className="me-3", width="1")
             ],
             className="g-2"),
 
         dbc.Row(
             [
                 dbc.Label("Latitude", width="auto"),
-                dbc.Col(dbc.Input(), className="me-3", width="1")
+                dbc.Col(dbc.Input(id='input-form-latitude', type='text'), className="me-3", width="1")
             ],
             className="g-2"),
 
         dbc.Row(
             [
                 dbc.Label("House median age", width="auto"),
-                dbc.Col(dbc.Input(), className="me-3", width="1")
+                dbc.Col(dbc.Input(id='input-form-median-age', type='text'), className="me-3", width="1")
             ],
             className="g-2"),
 
         dbc.Row(
             [
                 dbc.Label("Total rooms", width="auto"),
-                dbc.Col(dbc.Input(), className="me-3", width="1")
+                dbc.Col(dbc.Input(id='input-form-rooms', type='text'), className="me-3", width="1")
             ],
             className="g-2"),
 
         dbc.Row(
             [
                 dbc.Label("Total bedrooms", width="auto"),
-                dbc.Col(dbc.Input(), className="me-3", width="1")
+                dbc.Col(dbc.Input(id='input-form-bedrooms', type='text'), className="me-3", width="1")
             ],
             className="g-2"),
 
         dbc.Row(
             [
                 dbc.Label("Population", width="auto"),
-                dbc.Col(dbc.Input(), className="me-3", width="1")
+                dbc.Col(dbc.Input(id='input-form-population', type='text'), className="me-3", width="1")
             ],
             className="g-2"),
 
         dbc.Row(
             [
                 dbc.Label("Number of households", width="auto"),
-                dbc.Col(dbc.Input(), className="me-3", width="1")
+                dbc.Col(dbc.Input(id='input-form-households', type='text'), className="me-3", width="1")
             ],
             className="g-2"),
 
         dbc.Row(
             [
                 dbc.Label("Median income", width="auto"),
-                dbc.Col(dbc.Input(), className="me-3", width="1")
-            ],
-            className="g-2"),
-
-        dbc.Row(
-            [
-                dbc.Label("Median house value", width="auto"),
-                dbc.Col(dbc.Input(), className="me-3", width="1")
+                dbc.Col(dbc.Input(id='input-form-income', type='text'), className="me-3", width="1")
             ],
             className="g-2"),
 
@@ -234,7 +226,7 @@ layout4 = html.Div(children=[
             [
                 dbc.Label("Dropdown", html_for="dropdown"),
                 dcc.Dropdown(
-                    id="dropdown", style={'color': 'pink'},
+                    id="input-form-proximity", style={'color': 'pink'},
                     options=[
                         {"label": "<1H OCEAN", "value": 0},
                         {"label": "INLAND", "value": 1},
@@ -249,15 +241,20 @@ layout4 = html.Div(children=[
 
         html.Br(),
 
-        dbc.Row(
-            [
-                dbc.Col(dbc.Button("Submit", color="primary"), width="auto"),
-            ],
-            className="g-2"),
-        html.Br()
+        dbc.Button("Submit", color="primary", id='submit-val-dl', n_clicks=0),
+        
+        html.Br(),
+        html.Div(children=[
+            html.H5('The deep learning model has predicted this value : '),
+            html.H5(id='output-prediction-dl', className="my-4", style={"font-weight": "bold"})])
     ]),
 
-])
+], style={
+        'margin': 'auto',
+        'max-width': '95vw',
+        'margin-top': '3%',
+        'textAlign': 'center'
+        })
 
 layout5 = html.Div(children=[
     html.Div([

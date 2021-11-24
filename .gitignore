@@ -33,3 +33,10 @@ ipython_config.py
 
 # Data
 /Data
+.idea/vcs.xml
+.idea/other.xml
+.idea/modules.xml
+.idea/misc.xml
+.idea/inspectionProfiles/profiles_settings.xml
+.idea/House-Prediction.iml
+.idea/workspace.xml

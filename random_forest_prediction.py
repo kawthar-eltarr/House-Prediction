@@ -68,8 +68,10 @@ class HousePricing:
         filename = 'model\RF_model.sav'
         joblib.dump(self.model, filename)
         
-    def model_predict(self):
-        return 0
+    def model_predict(self, X_test):
+        scaler = StandardScaler()
+        scaler.fit_transform(X_test)
+        return self.model.predict(X_test)
         
         
 

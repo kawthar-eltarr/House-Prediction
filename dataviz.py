@@ -3,7 +3,6 @@ from dash import Dash
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
-import dash_bootstrap_components as dbc
 # Plotly
 import plotly.graph_objects as go
 import plotly.express as px
@@ -58,12 +57,24 @@ app.layout = html.Div(children=[
     html.Div([
         html.H1(children='Housing prices in California'),
 
-        html.H4(id='mean_price'),
+        html.H4(id='mean_price', style = {'text-decoration': 'underline'}),
 
         html.Div(
             html.Div(
                 html.P(
-                    [html.H4(children='Price', className = "card-title"),
+                    [
+                    html.H4('Type of graph'),
+                    dcc.Dropdown(
+                        id='dropdown_graph',
+                        options=[
+                            {'label': 'Map', 'value': 'map'},
+                            {'label': 'Histogram', 'value': 'hist'}
+                        ],
+                        value='hist'
+                    ),
+                        
+                    html.H4(children='Price', className = "card-title",
+                           style = {'marginTop': 10}),
                     dcc.RangeSlider(
                         id = 'price_range',
                         marks = {str(x): str(x) for x in mark_list(min_house_value, max_house_value)},
@@ -130,7 +141,7 @@ app.layout = html.Div(children=[
                 ),
                 className='card-body'
             ),
-        className="card border-secondary mb-3", style={'max-width': '30rem', 'marginLeft': 1300, 'marginTop': 50}
+        className="card border-secondary mb-3", style={'max-width': '30rem', 'marginLeft': 750, 'marginTop': 50}
         ),
     ], style = {'marginBottom': 50, 'marginTop': 50, 'marginLeft': 50, 'marginRight': 25}),
 
@@ -138,7 +149,7 @@ app.layout = html.Div(children=[
         dcc.Graph(
             id='myMap'
         ),
-    style = {'position':'relative', 'bottom':600, 'left':50, 'width':1200}
+    style = {'position':'relative', 'bottom':700, 'left':50, 'width':700}
     )
 ])
     
@@ -154,8 +165,9 @@ app.layout = html.Div(children=[
     dash.dependencies.Input('loc_choice', 'value'),
     dash.dependencies.Input('population_range', 'value'),
     dash.dependencies.Input('mean_rooms', 'value'),
-    dash.dependencies.Input('mean_bedrooms', 'value')])
-def update_graph(value, location, pop_range, room_range, bedroom_range):
+    dash.dependencies.Input('mean_bedrooms', 'value'),
+    dash.dependencies.Input('dropdown_graph', 'value')])
+def update_data(value, location, pop_range, room_range, bedroom_range, graph):
     
     # Filtering upon price
     filtered_data = map_data[map_data.median_house_value > value[0]]
@@ -175,61 +187,72 @@ def update_graph(value, location, pop_range, room_range, bedroom_range):
 
     if location != 'WTVR':
         filtered_data = filtered_data[filtered_data.ocean_proximity == location]
-
-    fig = go.Figure(layout = go.Layout(height = 700, width = 1200),
-        data = go.Scattergeo(
-        lat = filtered_data['latitude'],
-        lon = filtered_data['longitude'],
-        text = filtered_data['median_house_value'].astype(str),
-        marker = dict(
-            color = filtered_data['median_house_value'],
-            colorscale = scl,
-            reversescale = False,
-            opacity = 0.7,
-            size = 4,
-            colorbar = dict(
-                titleside = "right",
-                outlinecolor = "rgba(68, 68, 68, 0)",
-                ticks = "outside",
-                showticksuffix = "last",
-                dtick = 50000
+        
+    if graph == 'map':
+        
+        fig = go.Figure(layout = go.Layout(height = 500, width = 700),
+            data = go.Scattergeo(
+            lat = filtered_data['latitude'],
+            lon = filtered_data['longitude'],
+            text = filtered_data['median_house_value'].astype(str),
+            marker = dict(
+                color = filtered_data['median_house_value'],
+                colorscale = scl,
+                reversescale = False,
+                opacity = 0.7,
+                size = 4,
+                colorbar = dict(
+                    titleside = "right",
+                    outlinecolor = "rgba(68, 68, 68, 0)",
+                    ticks = "outside",
+                    showticksuffix = "last",
+                    dtick = 50000
+                        )
                     )
+                ))
+
+        fig.update_layout(
+            geo = dict(
+                scope = 'usa',
+                showland = True,
+                landcolor = "rgb(220, 220, 220)",
+                subunitcolor = "rgb(255, 255, 255)",
+                countrycolor = "rgb(255, 255, 255)",
+                showlakes = True,
+                lakecolor = "rgb(255, 255, 255)",
+                showsubunits = True,
+                showcountries = True,
+                resolution = 50,
+                center = {'lat': 35, 'lon': -120},
+                projection = go.layout.geo.Projection(
+                    scale=4
+                ),
+                lonaxis = dict(
+                    showgrid = True,
+                    gridwidth = 0.5,
+                    range= [ -140.0, -55.0 ],
+                    dtick = 1
+                ),
+                lataxis = dict(
+                    showgrid = True,
+                    gridwidth = 0.5,
+                    range= [ 20.0, 60.0 ],
+                    dtick = 1
                 )
-            ))
-    
-    fig.update_layout(
-        geo = dict(
-            scope = 'usa',
-            showland = True,
-            landcolor = "rgb(220, 220, 220)",
-            subunitcolor = "rgb(255, 255, 255)",
-            countrycolor = "rgb(255, 255, 255)",
-            showlakes = True,
-            lakecolor = "rgb(255, 255, 255)",
-            showsubunits = True,
-            showcountries = True,
-            resolution = 50,
-            center = {'lat': 35, 'lon': -120},
-            projection = go.layout.geo.Projection(
-                scale=4
-            ),
-            lonaxis = dict(
-                showgrid = True,
-                gridwidth = 0.5,
-                range= [ -140.0, -55.0 ],
-                dtick = 1
-            ),
-            lataxis = dict(
-                showgrid = True,
-                gridwidth = 0.5,
-                range= [ 20.0, 60.0 ],
-                dtick = 1
             )
         )
-    )
     
     # Creating mean value text
+    
+    if graph == 'hist':
+        
+        fig = px.histogram(filtered_data, x="median_house_value", 
+                           nbins=100, 
+                           labels={'x':'Median House Value', 'y':''},
+                          histnorm='percent')
+    
     mean_value = filtered_data.median_house_value.mean()
+    
     
     if mean_value is np.nan:
         mean_median_price_text = 'There are no house in the selection !'

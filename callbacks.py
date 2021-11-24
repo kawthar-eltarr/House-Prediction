@@ -4,11 +4,13 @@ import pandas as pd
 import plotly.graph_objects as go
 import plotly.express as px
 
-from dash.dependencies import Input, Output, State
+from dash.dependencies import Input, Output
 
 from sklearn.preprocessing import StandardScaler
 
 import joblib
+
+import keras
 
 from app import app
 
@@ -37,8 +39,8 @@ scl = [0, "rgb(150,0,90)"], [0.125, "rgb(0, 0, 200)"], [0.25, "rgb(0, 25, 255)"]
       [0.75, "rgb(255, 234, 0)"], [0.875, "rgb(255, 111, 0)"], [1, "rgb(255, 0, 0)"]
 
 
-@app.callback(Output('output-prediction', 'children'),
-              Input('submit-val', 'n_clicks'),
+@app.callback(Output('output-prediction-ml', 'children'),
+              Input('submit-val-ml', 'n_clicks'),
               Input('input-form-longitude', 'value'),
               Input('input-form-latitude', 'value'),
               Input('input-form-median-age', 'value'),
@@ -48,7 +50,7 @@ scl = [0, "rgb(150,0,90)"], [0.125, "rgb(0, 0, 200)"], [0.25, "rgb(0, 25, 255)"]
               Input('input-form-households', 'value'),
               Input('input-form-income', 'value'),
               Input('input-form-proximity', 'value'))
-def update_output(n_clicks, input1, input2, input3, input4, input5,
+def update_output_ml(n_clicks, input1, input2, input3, input4, input5,
                   input6, input7, input8, input9):
     if input1 and input2 and input3 and input4 and input5 and input6 and input7 and input8 and input9:
         X_test = np.array([float(input1), float(input2), float(input3), float(input4), float(input5),
@@ -64,6 +66,32 @@ def update_output(n_clicks, input1, input2, input3, input4, input5,
 
         return '{}'.format(y_pred)
 
+@app.callback(Output('output-prediction-dl', 'children'),
+              Input('submit-val-dl', 'n_clicks'),
+              Input('input-form-longitude', 'value'),
+              Input('input-form-latitude', 'value'),
+              Input('input-form-median-age', 'value'),
+              Input('input-form-rooms', 'value'),
+              Input('input-form-bedrooms', 'value'),
+              Input('input-form-population', 'value'),
+              Input('input-form-households', 'value'),
+              Input('input-form-income', 'value'),
+              Input('input-form-proximity', 'value'))
+def update_output_dl(n_clicks, input1, input2, input3, input4, input5,
+                  input6, input7, input8, input9):
+    if input1 and input2 and input3 and input4 and input5 and input6 and input7 and input8 and input9:
+        X_test = np.array([float(input1), float(input2), float(input3), float(input4), float(input5),
+                           float(input6), float(input7), float(input8), input9]).reshape(1, -1)
+
+        scaler = StandardScaler()
+
+        scaler.fit_transform(X_test)
+
+        model = keras.models.load_model(r'C:/Users/straw/Desktop/AIS2/House-Prediction/model/nn_model')
+
+        y_pred = model.predict(X_test)
+
+        return '{}'.format(y_pred)
 
 @app.callback(
     [Output('myMap', 'figure'),

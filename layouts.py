@@ -2,6 +2,8 @@ from dash import dcc
 from dash import html
 import dash_bootstrap_components as dbc
 
+from sklearn.preprocessing import StandardScaler
+
 layout1 = html.Div([
     html.H1('House Prediction Project'),
     dbc.Button(dcc.Link('Price Prediction Tool', href='/pred_tool')),
@@ -209,3 +211,6 @@ layout4 = html.Div(children=[
 layout5 = html.Div([
     html.H1('Data Visualization Tool'), 
 ])
+
+
+

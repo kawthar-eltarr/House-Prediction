@@ -10,7 +10,7 @@ from sklearn.preprocessing import StandardScaler
 
 import joblib
 
-import keras
+#import keras
 
 from app import app
 
@@ -83,15 +83,15 @@ def update_output_dl(n_clicks, input1, input2, input3, input4, input5,
         X_test = np.array([float(input1), float(input2), float(input3), float(input4), float(input5),
                            float(input6), float(input7), float(input8), input9]).reshape(1, -1)
 
-        scaler = StandardScaler()
+        #scaler = StandardScaler()
 
-        scaler.fit_transform(X_test)
+        #scaler.fit_transform(X_test)
 
-        model = keras.models.load_model(r'C:/Users/straw/Desktop/AIS2/House-Prediction/model/nn_model')
+        #model = keras.models.load_model(r'C:/Users/straw/Desktop/AIS2/House-Prediction/model/nn_model')
 
-        y_pred = model.predict(X_test)
+        #y_pred = model.predict(X_test)
 
-        return '{}'.format(y_pred)
+        return '{}'.format(0)
 
 @app.callback(
     [Output('myMap', 'figure'),

@@ -2,23 +2,42 @@ from dash import dcc
 from dash import html
 import dash_bootstrap_components as dbc
 
-from sklearn.preprocessing import StandardScaler
 
-layout1 = html.Div([
-    html.H1('House Prediction Project'),
-    dbc.Button(dcc.Link('Price Prediction Tool', href='/pred_tool')),
-    dbc.Button(dcc.Link('Data Visualization Tool', href='/viz_tool'))
-])
+layout1 = html.Div(
+    className="card border-secondary mb-3", 
+    children=[
+    html.H1('House Prediction Project', style={'margin': 'inherit'}),
+    dbc.Button(dcc.Link('Price Prediction Tool', href='/pred_tool'), className="btn btn-primary btn-lg", style={'margin': 'auto'}),
+    html.Br(),
+    dbc.Button(dcc.Link('Data Visualization Tool', href='/viz_tool'), className="btn btn-primary btn-lg", style={'margin': 'auto'}),
+    html.H1(style={'margin-top': '2%'})],
+    style={
+        'margin': 'auto', 
+        'max-width': '95vw', 
+        'margin-top': '3%',
+        'textAlign': 'center',
+        }
+    )
 
-layout2 = html.Div([
-    html.H1('House Prediction Project'),
-    dbc.Button(dcc.Link('Prediction with Machine Learning', href='/pred_tool/ml')),
-    dbc.Button(dcc.Link('Prediction with Deep Learning', href='/pred_tool/dl'))
-])
+layout2 = html.Div(
+    className="card border-secondary mb-3", 
+    children=[
+    html.H1('House Prediction Project', style={'margin': 'inherit'}),
+    dbc.Button(dcc.Link('Prediction with Machine Learning', href='/pred_tool/ml'), className="btn btn-primary btn-lg", style={'margin': 'auto'}),
+    html.Br(),
+    dbc.Button(dcc.Link('Prediction with Deep Learning', href='/pred_tool/dl'), className="btn btn-primary btn-lg", style={'margin': 'auto'}),
+    html.H1(style={'margin-top': '2%'})],
+    style={
+        'margin': 'auto', 
+        'max-width': '95vw', 
+        'margin-top': '3%',
+        'textAlign': 'center',
+        }
+    )
 
-layout3 = html.Div(children=[
-    html.H1('Price Prediction Tool with Machine Learning'),
-    dbc.Form(children=[
+layout3 = html.Div(className="card border-secondary mb-3", children=[
+    html.H1('Price Prediction Tool with Machine Learning', style={'margin-top': '1.5%'}),
+    dbc.Form(style = {'margin-left': '2%', 'margin-right': '2%'}, children=[
         dbc.Row(
             [
                 dbc.Label("Longitude", width="auto"),
@@ -88,11 +107,12 @@ layout3 = html.Div(children=[
                         {"label" : "NEAR BAY", "value": 3},
                         {"label" : "ISLAND", "value": 2}
                         
-                    ]),
+                    ], style={'color':'pink'}),
             ],
             className="nav-item dropdown",
         ),
         html.Br(),
+        
         dbc.Button("Submit", color="primary", id='submit-val', n_clicks=0),
 
         html.Br(),
@@ -101,12 +121,18 @@ layout3 = html.Div(children=[
             html.H5('The machine learning model has predicted this value : '),
             html.H5(id='output-prediction', className="my-4", style={"font-weight": "bold"})]),
         ]),
-
-
-])
+    
+    ], 
+    
+    style={
+        'margin': 'auto', 
+        'max-width': '95vw', 
+        'margin-top': '3%',
+        'textAlign': 'center',
+        })
 
 layout4 = html.Div(children=[
-    html.H1('Price Prediction Tool with Deep Learning'),
+    html.H1('Price Prediction Tool with Deep Learning', style={'margin': 'inherit'}),
     dbc.Form(children=[
         dbc.Row(
             [
@@ -195,7 +221,8 @@ layout4 = html.Div(children=[
             [
                 dbc.Col(dbc.Button("Submit", color="primary"), width="auto"),
             ],
-            className="g-2")
+            className="g-2"),
+        html.Br()
         ]),
 
 

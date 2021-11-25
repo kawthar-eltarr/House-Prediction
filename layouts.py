@@ -75,56 +75,56 @@ layout3 = html.Div(className="card border-secondary mb-3", children=[
         dbc.Row(
             [
                 dbc.Label("Longitude", width="auto"),
-                dbc.Col(dbc.Input(id='input-form-longitude', type='text'), className="me-3", width="1")
+                dbc.Col(dbc.Input(id='input-form-longitude', type='text'), className="me-3", width="2")
             ],
             className="g-2"),
 
         dbc.Row(
             [
                 dbc.Label("Latitude", width="auto"),
-                dbc.Col(dbc.Input(id='input-form-latitude', type='text'), className="me-3", width="1")
+                dbc.Col(dbc.Input(id='input-form-latitude', type='text'), className="me-3", width="2")
             ],
             className="g-2"),
 
         dbc.Row(
             [
                 dbc.Label("House median age", width="auto"),
-                dbc.Col(dbc.Input(id='input-form-median-age', type='text'), className="me-3", width="1")
+                dbc.Col(dbc.Input(id='input-form-median-age', type='text'), className="me-3", width="2")
             ],
             className="g-2"),
 
         dbc.Row(
             [
                 dbc.Label("Total rooms", width="auto"),
-                dbc.Col(dbc.Input(id='input-form-rooms', type='text'), className="me-3", width="1")
+                dbc.Col(dbc.Input(id='input-form-rooms', type='text'), className="me-3", width="2")
             ],
             className="g-2"),
 
         dbc.Row(
             [
                 dbc.Label("Total bedrooms", width="auto"),
-                dbc.Col(dbc.Input(id='input-form-bedrooms', type='text'), className="me-3", width="1")
+                dbc.Col(dbc.Input(id='input-form-bedrooms', type='text'), className="me-3", width="2")
             ],
             className="g-2"),
 
         dbc.Row(
             [
                 dbc.Label("Population", width="auto"),
-                dbc.Col(dbc.Input(id='input-form-population', type='text'), className="me-3", width="1")
+                dbc.Col(dbc.Input(id='input-form-population', type='text'), className="me-3", width="2")
             ],
             className="g-2"),
 
         dbc.Row(
             [
                 dbc.Label("Number of households", width="auto"),
-                dbc.Col(dbc.Input(id='input-form-households', type='text'), className="me-3", width="1")
+                dbc.Col(dbc.Input(id='input-form-households', type='text'), className="me-3", width="2")
             ],
             className="g-2"),
 
         dbc.Row(
             [
                 dbc.Label("Median income", width="auto"),
-                dbc.Col(dbc.Input(id='input-form-income', type='text'), className="me-3", width="1")
+                dbc.Col(dbc.Input(id='input-form-income', type='text'), className="me-3", width="2")
             ],
             className="g-2"),
 
@@ -169,56 +169,56 @@ layout4 = html.Div(className="card border-secondary mb-3", children=[
         dbc.Row(
             [
                 dbc.Label("Longitude", width="auto"),
-                dbc.Col(dbc.Input(id='input-form-longitude', type='text'), className="me-3", width="1")
+                dbc.Col(dbc.Input(id='input-form-longitude', type='text'), className="me-3", width="2")
             ],
             className="g-2"),
 
         dbc.Row(
             [
                 dbc.Label("Latitude", width="auto"),
-                dbc.Col(dbc.Input(id='input-form-latitude', type='text'), className="me-3", width="1")
+                dbc.Col(dbc.Input(id='input-form-latitude', type='text'), className="me-3", width="2")
             ],
             className="g-2"),
 
         dbc.Row(
             [
                 dbc.Label("House median age", width="auto"),
-                dbc.Col(dbc.Input(id='input-form-median-age', type='text'), className="me-3", width="1")
+                dbc.Col(dbc.Input(id='input-form-median-age', type='text'), className="me-3", width="2")
             ],
             className="g-2"),
 
         dbc.Row(
             [
                 dbc.Label("Total rooms", width="auto"),
-                dbc.Col(dbc.Input(id='input-form-rooms', type='text'), className="me-3", width="1")
+                dbc.Col(dbc.Input(id='input-form-rooms', type='text'), className="me-3", width="2")
             ],
             className="g-2"),
 
         dbc.Row(
             [
                 dbc.Label("Total bedrooms", width="auto"),
-                dbc.Col(dbc.Input(id='input-form-bedrooms', type='text'), className="me-3", width="1")
+                dbc.Col(dbc.Input(id='input-form-bedrooms', type='text'), className="me-3", width="2")
             ],
             className="g-2"),
 
         dbc.Row(
             [
                 dbc.Label("Population", width="auto"),
-                dbc.Col(dbc.Input(id='input-form-population', type='text'), className="me-3", width="1")
+                dbc.Col(dbc.Input(id='input-form-population', type='text'), className="me-3", width="2")
             ],
             className="g-2"),
 
         dbc.Row(
             [
                 dbc.Label("Number of households", width="auto"),
-                dbc.Col(dbc.Input(id='input-form-households', type='text'), className="me-3", width="1")
+                dbc.Col(dbc.Input(id='input-form-households', type='text'), className="me-3", width="2")
             ],
             className="g-2"),
 
         dbc.Row(
             [
                 dbc.Label("Median income", width="auto"),
-                dbc.Col(dbc.Input(id='input-form-income', type='text'), className="me-3", width="1")
+                dbc.Col(dbc.Input(id='input-form-income', type='text'), className="me-3", width="2")
             ],
             className="g-2"),
 
